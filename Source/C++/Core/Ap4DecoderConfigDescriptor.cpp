@@ -69,11 +69,16 @@ AP4_DecoderConfigDescriptor::AP4_DecoderConfigDescriptor(
 |   AP4_DecoderConfigDescriptor::AP4_DecoderConfigDescriptor
 +---------------------------------------------------------------------*/
 AP4_DecoderConfigDescriptor::AP4_DecoderConfigDescriptor(
-    AP4_ByteStream& stream, AP4_Size header_size, AP4_Size payload_size) :
+    AP4_ByteStream& stream, AP4_Size header_size, AP4_Size payload_size,
+    AP4_UI64     _offset) :
     AP4_Descriptor(AP4_DESCRIPTOR_TAG_DECODER_CONFIG, 
                    header_size, 
-                   payload_size)
+                   payload_size, _offset)
 {
+    // record the start position
+    AP4_Position start;
+    stream.Tell(start);
+
     // read descriptor fields
     if (payload_size < 13) return;
     stream.ReadUI08(m_ObjectTypeIndication);
@@ -131,7 +136,7 @@ AP4_DecoderConfigDescriptor::WriteFields(AP4_ByteStream& stream)
 AP4_Result
 AP4_DecoderConfigDescriptor::Inspect(AP4_AtomInspector& inspector)
 {
-    inspector.StartDescriptor("DecoderConfig", GetHeaderSize(), GetSize());
+    inspector.StartDescriptor("DecoderConfig", GetHeaderSize(), GetSize(), m_offset);
     inspector.AddField("stream_type", m_StreamType);
     inspector.AddField("object_type", m_ObjectTypeIndication);
     inspector.AddField("up_stream", m_UpStream);

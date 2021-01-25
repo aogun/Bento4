@@ -62,15 +62,27 @@ AP4_ObjectDescriptor::AP4_ObjectDescriptor(AP4_UI08 tag, AP4_UI16 id) :
 {
 }
 
+AP4_ObjectDescriptor::AP4_ObjectDescriptor(AP4_ByteStream& stream,
+                                           AP4_UI08        tag,
+                                           AP4_Size        header_size,
+                                           AP4_Size        payload_size) :
+        AP4_ObjectDescriptor(stream, tag, header_size, payload_size, AP4_ATOM_INVALID_OFFSET)
+{
+
+}
 /*----------------------------------------------------------------------
 |   AP4_ObjectDescriptor::AP4_ObjectDescriptor
 +---------------------------------------------------------------------*/
 AP4_ObjectDescriptor::AP4_ObjectDescriptor(AP4_ByteStream& stream, 
                                            AP4_UI08        tag,
                                            AP4_Size        header_size,
-                                           AP4_Size        payload_size) :
-    AP4_Descriptor(tag, header_size, payload_size)
+                                           AP4_Size        payload_size,
+                                           AP4_UI64        _offset) :
+    AP4_Descriptor(tag, header_size, payload_size, _offset)
 {
+    AP4_Position start;
+    stream.Tell(start);
+
     // read descriptor fields
     unsigned short bits;
     if (payload_size < 2) return;
@@ -157,7 +169,7 @@ AP4_ObjectDescriptor::WriteFields(AP4_ByteStream& stream)
 AP4_Result
 AP4_ObjectDescriptor::Inspect(AP4_AtomInspector& inspector)
 {
-    inspector.StartDescriptor("ObjectDescriptor", GetHeaderSize(), GetSize());
+    inspector.StartDescriptor("ObjectDescriptor", GetHeaderSize(), GetSize(), m_offset);
     inspector.AddField("id", m_ObjectDescriptorId);
     if (m_UrlFlag) {
         inspector.AddField("url", m_Url.GetChars());
@@ -225,6 +237,9 @@ AP4_InitialObjectDescriptor::AP4_InitialObjectDescriptor(AP4_ByteStream& stream,
     m_VisualProfileLevelIndication(0),
     m_GraphicsProfileLevelIndication(0)
 {
+    AP4_Position start;
+    stream.Tell(start);
+
     // read descriptor fields
     unsigned short bits;
     if (payload_size < 2) return;
@@ -308,7 +323,7 @@ AP4_InitialObjectDescriptor::WriteFields(AP4_ByteStream& stream)
 AP4_Result
 AP4_InitialObjectDescriptor::Inspect(AP4_AtomInspector& inspector)
 {
-    inspector.StartDescriptor("InitialObjectDescriptor", GetHeaderSize(), GetSize());
+    inspector.StartDescriptor("InitialObjectDescriptor", GetHeaderSize(), GetSize(), m_offset);
     inspector.AddField("id", m_ObjectDescriptorId);
     if (m_UrlFlag) {
         inspector.AddField("url", m_Url.GetChars());
@@ -389,15 +404,15 @@ AP4_DescriptorUpdateCommand::Inspect(AP4_AtomInspector& inspector)
 {
     switch (GetTag()) {
         case AP4_COMMAND_TAG_OBJECT_DESCRIPTOR_UPDATE:
-            inspector.StartDescriptor("ObjectDescriptorUpdate", GetHeaderSize(), GetSize());
+            inspector.StartDescriptor("ObjectDescriptorUpdate", GetHeaderSize(), GetSize(), m_offset);
             break;
 
         case AP4_COMMAND_TAG_IPMP_DESCRIPTOR_UPDATE:
-            inspector.StartDescriptor("IPMP_DescriptorUpdate", GetHeaderSize(), GetSize());
+            inspector.StartDescriptor("IPMP_DescriptorUpdate", GetHeaderSize(), GetSize(), m_offset);
             break;
 
         default:
-            inspector.StartDescriptor("DescriptorUpdate", GetHeaderSize(), GetSize());
+            inspector.StartDescriptor("DescriptorUpdate", GetHeaderSize(), GetSize(), m_offset);
             break;
     }
     

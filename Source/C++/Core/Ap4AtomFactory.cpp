@@ -240,6 +240,7 @@ AP4_AtomFactory::CreateAtomFromStream(AP4_ByteStream& stream,
         stream.Seek(start+payload_offset);
         atom = new AP4_UnknownAtom(type, size, stream);
     }
+    atom->SetOffset(start);
 
     // special case: if the atom is poorly encoded and has a 64-bit
     // size header but an actual size that fits on 32-bit, adjust the

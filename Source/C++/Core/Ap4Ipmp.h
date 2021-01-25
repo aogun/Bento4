@@ -55,6 +55,10 @@ public:
     AP4_IpmpDescriptorPointer(AP4_ByteStream&     stream, 
                               AP4_Size            header_size, 
                               AP4_Size            payload_size);
+    AP4_IpmpDescriptorPointer(AP4_ByteStream&     stream,
+                              AP4_Size            header_size,
+                              AP4_Size            payload_size,
+                              AP4_UI64 offset);
     virtual AP4_Result WriteFields(AP4_ByteStream& stream);
     virtual AP4_Result Inspect(AP4_AtomInspector& inspector);
 
@@ -83,6 +87,10 @@ public:
     AP4_IpmpDescriptor(AP4_ByteStream&     stream, 
                        AP4_Size            header_size, 
                        AP4_Size            payload_size);
+    AP4_IpmpDescriptor(AP4_ByteStream&     stream,
+                       AP4_Size            header_size,
+                       AP4_Size            payload_size,
+                       AP4_UI64 offset);
     virtual AP4_Result WriteFields(AP4_ByteStream& stream);
     virtual AP4_Result Inspect(AP4_AtomInspector& inspector);
 

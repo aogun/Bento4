@@ -53,6 +53,8 @@ class AP4_Descriptor : public AP4_Expandable
     // constructor
     AP4_Descriptor(AP4_UI08 tag, AP4_Size header_size, AP4_Size payload_size) :
         AP4_Expandable(tag, CLASS_ID_SIZE_08, header_size, payload_size) {}
+    AP4_Descriptor(AP4_UI08 tag, AP4_Size header_size, AP4_Size payload_size, AP4_UI64 offset) :
+        AP4_Expandable(tag, CLASS_ID_SIZE_08, header_size, payload_size, offset) {}
 
     // AP4_Exandable methods
     virtual AP4_Result Inspect(AP4_AtomInspector& inspector);

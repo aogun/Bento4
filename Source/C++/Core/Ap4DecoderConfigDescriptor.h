@@ -64,7 +64,8 @@ class AP4_DecoderConfigDescriptor : public AP4_Descriptor
                                 AP4_DecoderSpecificInfoDescriptor* dsi);
     AP4_DecoderConfigDescriptor(AP4_ByteStream& stream, 
                                 AP4_Size        header_size,
-                                AP4_Size        payload_size);
+                                AP4_Size        payload_size,
+                                AP4_UI64     offset);
     virtual ~AP4_DecoderConfigDescriptor();
     virtual AP4_Result WriteFields(AP4_ByteStream& stream);
     virtual AP4_Result Inspect(AP4_AtomInspector& inspector);

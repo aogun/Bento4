@@ -279,7 +279,7 @@ AP4_Atom::InspectHeader(AP4_AtomInspector& inspector)
                         m_Version,
                         m_Flags,
                         GetHeaderSize(),
-                        GetSize());
+                        GetSize(), m_offset);
 
     return AP4_SUCCESS;
 }
@@ -817,7 +817,8 @@ AP4_PrintInspector::StartAtom(const char* name,
                               AP4_UI08    version,
                               AP4_UI32    flags,
                               AP4_Size    header_size,
-                              AP4_UI64    size)
+                              AP4_UI64    size,
+                              AP4_UI64    offset)
 {
     // write atom name
     char info[128];
@@ -1154,7 +1155,8 @@ AP4_JsonInspector::StartAtom(const char* name,
                              AP4_UI08    /*version*/,
                              AP4_UI32    /*flags*/,
                              AP4_Size    header_size,
-                             AP4_UI64    size)
+                             AP4_UI64    size,
+                             AP4_UI64    offset)
 {
     char prefix[256];
     AP4_MakePrefixString(m_Depth*2, prefix, sizeof(prefix));
@@ -1217,7 +1219,7 @@ AP4_JsonInspector::StartDescriptor(const char* name,
                                    AP4_Size    header_size,
                                    AP4_UI64    size)
 {
-    StartAtom(name, 0, 0, header_size, size);
+    StartAtom(name, 0, 0, header_size, size, AP4_ATOM_INVALID_OFFSET);
 }
 
 /*----------------------------------------------------------------------

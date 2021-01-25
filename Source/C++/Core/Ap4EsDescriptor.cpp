@@ -60,9 +60,13 @@ AP4_EsDescriptor::AP4_EsDescriptor(AP4_UI16 es_id) :
 +---------------------------------------------------------------------*/
 AP4_EsDescriptor::AP4_EsDescriptor(AP4_ByteStream& stream, 
                                    AP4_Size        header_size,
-                                   AP4_Size        payload_size) :
-    AP4_Descriptor(AP4_DESCRIPTOR_TAG_ES, header_size, payload_size)
+                                   AP4_Size        payload_size,
+                                   AP4_UI64     _offset) :
+    AP4_Descriptor(AP4_DESCRIPTOR_TAG_ES, header_size, payload_size, _offset)
 {
+    AP4_Position start;
+    stream.Tell(start);
+
     // read descriptor fields
     if (payload_size < 3) return;
     stream.ReadUI16(m_EsId);
@@ -171,7 +175,7 @@ AP4_EsDescriptor::WriteFields(AP4_ByteStream& stream)
 AP4_Result
 AP4_EsDescriptor::Inspect(AP4_AtomInspector& inspector)
 {
-    inspector.StartDescriptor("ESDescriptor", GetHeaderSize(), GetSize());
+    inspector.StartDescriptor("ESDescriptor", GetHeaderSize(), GetSize(), m_offset);
     inspector.AddField("es_id", m_EsId);
     inspector.AddField("stream_priority", m_StreamPriority);
 
@@ -253,7 +257,7 @@ AP4_EsIdIncDescriptor::WriteFields(AP4_ByteStream& stream)
 AP4_Result
 AP4_EsIdIncDescriptor::Inspect(AP4_AtomInspector& inspector)
 {
-    inspector.StartDescriptor("ES_ID_Inc", GetHeaderSize(), GetSize());
+    inspector.StartDescriptor("ES_ID_Inc", GetHeaderSize(), GetSize(), m_offset);
     inspector.AddField("track_id", m_TrackId);
     inspector.EndDescriptor();
     
@@ -298,7 +302,7 @@ AP4_EsIdRefDescriptor::WriteFields(AP4_ByteStream& stream)
 AP4_Result
 AP4_EsIdRefDescriptor::Inspect(AP4_AtomInspector& inspector)
 {
-    inspector.StartDescriptor("ES_ID_Ref", GetHeaderSize(), GetSize());
+    inspector.StartDescriptor("ES_ID_Ref", GetHeaderSize(), GetSize(), m_offset);
     inspector.AddField("ref_index", m_RefIndex);
     inspector.EndDescriptor();
     

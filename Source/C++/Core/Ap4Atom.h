@@ -97,11 +97,13 @@ public:
                            AP4_UI08    /* version     */,
                            AP4_UI32    /* flags       */,
                            AP4_Size    /* header_size */,
-                           AP4_UI64    /*size         */) {}
+                           AP4_UI64    /*size         */,
+                           AP4_UI64    /*offset         */) {}
     virtual void EndAtom() {}
     virtual void StartDescriptor(const char* /* name        */,
                                  AP4_Size    /* header_size */,
-                                 AP4_UI64    /*size         */) {}
+                                 AP4_UI64    /*size         */,
+                                 AP4_UI64    /*offset*/) {}
     virtual void EndDescriptor() {}
     virtual void AddField(const char* /* name */, 
                           AP4_UI64    /* value */, 
@@ -142,7 +144,8 @@ public:
                    AP4_UI08    version,
                    AP4_UI32    flags,
                    AP4_Size    header_size,
-                   AP4_UI64    size);
+                   AP4_UI64    size,
+                   AP4_UI64    offset);
     void EndAtom();
     void StartDescriptor(const char* name,
                          AP4_Size    header_size,
@@ -172,7 +175,8 @@ public:
                    AP4_UI08    version,
                    AP4_UI32    flags,
                    AP4_Size    header_size,
-                   AP4_UI64    size);
+                   AP4_UI64    size,
+                   AP4_UI64    offset);
     void EndAtom();
     void StartDescriptor(const char* name,
                          AP4_Size    header_size,
@@ -199,6 +203,7 @@ private:
 /**
  * Abstract base class for all atom types.
  */
+#define AP4_ATOM_INVALID_OFFSET     ((AP4_UI64)-1)
 class AP4_Atom {
 public:
      AP4_IMPLEMENT_DYNAMIC_CAST(AP4_Atom)
@@ -281,6 +286,8 @@ public:
      */ 
     virtual AP4_Atom* Clone();
 
+    void SetOffset(AP4_UI64 offset) { m_offset = offset; }
+
  protected:
     // members
     Type            m_Type;
@@ -291,6 +298,7 @@ public:
     AP4_UI08        m_Version;
     AP4_UI32        m_Flags;
     AP4_AtomParent* m_Parent;
+    AP4_UI64        m_offset = AP4_ATOM_INVALID_OFFSET;
 };
 
 /*----------------------------------------------------------------------

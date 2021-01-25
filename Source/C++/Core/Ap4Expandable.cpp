@@ -64,6 +64,23 @@ AP4_Expandable::AP4_Expandable(AP4_UI32    class_id,
     AP4_ASSERT(header_size >= 1+1);
     AP4_ASSERT(header_size <= 1+4);
 }
+/*----------------------------------------------------------------------
+|   AP4_Expandable::AP4_Expandable
++---------------------------------------------------------------------*/
+AP4_Expandable::AP4_Expandable(AP4_UI32    class_id,
+                               ClassIdSize class_id_size,
+                               AP4_Size    header_size,
+                               AP4_Size    payload_size,
+                               AP4_UI64     offset) :
+    m_ClassId(class_id),
+    m_ClassIdSize(class_id_size),
+    m_HeaderSize(header_size),
+    m_PayloadSize(payload_size),
+    m_offset(offset)
+{
+    AP4_ASSERT(header_size >= 1+1);
+    AP4_ASSERT(header_size <= 1+4);
+}
 
 /*----------------------------------------------------------------------
 |   AP4_Expandable::Write
@@ -119,7 +136,7 @@ AP4_Expandable::Inspect(AP4_AtomInspector& inspector)
 {
     char name[64];
     AP4_FormatString(name, sizeof(name), "#:%02x", m_ClassId);
-    inspector.StartDescriptor(name, GetHeaderSize(), GetSize());
+    inspector.StartDescriptor(name, GetHeaderSize(), GetSize(), m_offset);
     inspector.EndDescriptor();
 
     return AP4_SUCCESS;

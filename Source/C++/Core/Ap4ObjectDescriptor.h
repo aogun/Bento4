@@ -63,6 +63,11 @@ class AP4_ObjectDescriptor : public AP4_Descriptor
                          AP4_UI08        tag,
                          AP4_Size        header_size, 
                          AP4_Size        payload_size);
+    AP4_ObjectDescriptor(AP4_ByteStream& stream,
+                         AP4_UI08        tag,
+                         AP4_Size        header_size,
+                         AP4_Size        payload_size,
+                         AP4_UI64        offset);
     AP4_ObjectDescriptor(AP4_UI08 tag, AP4_UI16 id);
     virtual ~AP4_ObjectDescriptor();
     

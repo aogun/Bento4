@@ -56,9 +56,10 @@ AP4_DecoderSpecificInfoDescriptor::AP4_DecoderSpecificInfoDescriptor(
 |   AP4_DecoderSpecificInfoDescriptor::AP4_DecoderSpecificInfoDescriptor
 +---------------------------------------------------------------------*/
 AP4_DecoderSpecificInfoDescriptor::AP4_DecoderSpecificInfoDescriptor(
-    AP4_ByteStream& stream, AP4_Size header_size, AP4_Size payload_size) :
+    AP4_ByteStream& stream, AP4_Size header_size, AP4_Size payload_size,
+    AP4_UI64     offset) :
     AP4_Descriptor(AP4_DESCRIPTOR_TAG_DECODER_SPECIFIC_INFO, 
-                   header_size, payload_size)
+                   header_size, payload_size, offset)
 {
     m_Info.SetDataSize(payload_size);
 	stream.Read(m_Info.UseData(), payload_size);

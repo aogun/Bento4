@@ -65,7 +65,8 @@ class AP4_EsDescriptor : public AP4_Descriptor
     AP4_EsDescriptor(AP4_UI16 es_id);
     AP4_EsDescriptor(AP4_ByteStream& stream, 
                      AP4_Size        header_size, 
-                     AP4_Size        payload_size);
+                     AP4_Size        payload_size,
+                     AP4_UI64     offset);
     ~AP4_EsDescriptor();
     virtual AP4_Result AddSubDescriptor(AP4_Descriptor* descriptor);
     virtual AP4_Result WriteFields(AP4_ByteStream& stream);

@@ -46,7 +46,7 @@ AP4_Command::Inspect(AP4_AtomInspector& inspector)
 {
     char name[64];
     AP4_FormatString(name, sizeof(name), "Command:%02x", m_ClassId);
-    inspector.StartDescriptor(name, GetHeaderSize(), GetSize());
+    inspector.StartDescriptor(name, GetHeaderSize(), GetSize(), AP4_ATOM_INVALID_OFFSET);
     inspector.EndDescriptor();
 
     return AP4_SUCCESS;

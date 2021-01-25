@@ -133,7 +133,7 @@ AP4_UuidAtom::InspectHeader(AP4_AtomInspector& inspector)
                         m_Version,
                         m_Flags,
                         GetHeaderSize(),
-                        GetSize());
+                        GetSize(), m_offset);
 
     return AP4_SUCCESS;
 }

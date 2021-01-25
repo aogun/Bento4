@@ -60,6 +60,11 @@ class AP4_Expandable
                    ClassIdSize class_id_size, 
                    AP4_Size    header_size, 
                    AP4_Size    payload_size);
+    AP4_Expandable(AP4_UI32    class_id,
+                   ClassIdSize class_id_size,
+                   AP4_Size    header_size,
+                   AP4_Size    payload_size,
+                   AP4_UI64     offset);
     virtual ~AP4_Expandable() {}
     AP4_UI32           GetClassId()    { return m_ClassId;                  }
     AP4_Size           GetSize()       { return m_PayloadSize+m_HeaderSize; }
@@ -74,6 +79,7 @@ class AP4_Expandable
     ClassIdSize m_ClassIdSize;
     AP4_Size    m_HeaderSize;
     AP4_Size    m_PayloadSize;
+    AP4_UI64    m_offset = ((AP4_UI64)-1);
 };
 
 /*----------------------------------------------------------------------

@@ -82,7 +82,7 @@ AP4_DescriptorFactory::CreateDescriptorFromStream(AP4_ByteStream&  stream,
         switch (tag) {
           case AP4_DESCRIPTOR_TAG_OD:
           case AP4_DESCRIPTOR_TAG_MP4_OD:
-            descriptor = new AP4_ObjectDescriptor(stream, tag, header_size, payload_size);
+            descriptor = new AP4_ObjectDescriptor(stream, tag, header_size, payload_size, offset);
             break;
 
           case AP4_DESCRIPTOR_TAG_IOD:
@@ -99,28 +99,28 @@ AP4_DescriptorFactory::CreateDescriptorFromStream(AP4_ByteStream&  stream,
             break;
 
           case AP4_DESCRIPTOR_TAG_ES:
-            descriptor = new AP4_EsDescriptor(stream, header_size, payload_size);
+            descriptor = new AP4_EsDescriptor(stream, header_size, payload_size, offset);
             break;
 
           case AP4_DESCRIPTOR_TAG_DECODER_CONFIG:
-            descriptor = new AP4_DecoderConfigDescriptor(stream, header_size, payload_size);
+            descriptor = new AP4_DecoderConfigDescriptor(stream, header_size, payload_size, offset);
             break;
 
           case AP4_DESCRIPTOR_TAG_DECODER_SPECIFIC_INFO:
-            descriptor = new AP4_DecoderSpecificInfoDescriptor(stream, header_size, payload_size);
+            descriptor = new AP4_DecoderSpecificInfoDescriptor(stream, header_size, payload_size, offset);
             break;
 
           case AP4_DESCRIPTOR_TAG_SL_CONFIG:
             if (payload_size != 1) return AP4_ERROR_INVALID_FORMAT;
-            descriptor = new AP4_SLConfigDescriptor(header_size);
+            descriptor = new AP4_SLConfigDescriptor(header_size, offset);
             break;
 
           case AP4_DESCRIPTOR_TAG_IPMP_DESCRIPTOR_POINTER:
-            descriptor = new AP4_IpmpDescriptorPointer(stream, header_size, payload_size);
+            descriptor = new AP4_IpmpDescriptorPointer(stream, header_size, payload_size, offset);
             break;
 
           case AP4_DESCRIPTOR_TAG_IPMP_DESCRIPTOR:
-            descriptor = new AP4_IpmpDescriptor(stream, header_size, payload_size);
+            descriptor = new AP4_IpmpDescriptor(stream, header_size, payload_size, offset);
             break;
 
           default:
