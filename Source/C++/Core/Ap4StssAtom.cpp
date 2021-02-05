@@ -162,6 +162,17 @@ AP4_StssAtom::InspectFields(AP4_AtomInspector& inspector)
 {
     inspector.AddField("entry_count", m_Entries.ItemCount());
 
+    if (inspector.GetVerbosity() >= 1) {
+        char header[32];
+        char value[32];
+        for (AP4_Ordinal i = 0; i < m_Entries.ItemCount(); i++) {
+            AP4_FormatString(header, sizeof(header), "entry %8d", i);
+            AP4_FormatString(value, sizeof(value),
+                             "sample_number=%d",
+                             m_Entries[i]);
+            inspector.AddField(header, value);
+        }
+    }
     return AP4_SUCCESS;
 }
     
