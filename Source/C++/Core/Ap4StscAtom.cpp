@@ -237,18 +237,34 @@ AP4_StscAtom::InspectFields(AP4_AtomInspector& inspector)
 
     // dump table entries
     if (inspector.GetVerbosity() >= 1) {
-        char header[32];
-        char value[256];
-        for (unsigned int i=0; i<m_Entries.ItemCount(); i++) {
-            AP4_FormatString(header, sizeof(header), "entry %8d", i);  
-            AP4_FormatString(value, sizeof(value), 
-                    "first_chunk=%d, first_sample=%d, chunk_count=%d, samples_per_chunk=%d, sample_desc_index=%d", 
-                    m_Entries[i].m_FirstChunk,
-                    m_Entries[i].m_FirstSample,
-                    m_Entries[i].m_ChunkCount,
-                    m_Entries[i].m_SamplesPerChunk,
-                    m_Entries[i].m_SampleDescriptionIndex);
-            inspector.AddField(header, value);
+        if (inspector.GetVerbosity() == 99) {
+            AP4_UI64 * data = new AP4_UI64[m_Entries.ItemCount() * 5];
+
+            auto p = data;
+            for (unsigned int i=0; i<m_Entries.ItemCount(); i++) {
+                *p ++ = m_Entries[i].m_FirstChunk;
+                *p ++ = m_Entries[i].m_FirstSample;
+                *p ++ = m_Entries[i].m_ChunkCount;
+                *p ++ = m_Entries[i].m_SamplesPerChunk;
+                *p ++ = m_Entries[i].m_SampleDescriptionIndex;
+            }
+            inspector.AddFieldArray(5, m_Entries.ItemCount(),
+                                    "first_chunk,first_sample,chunk_count,samples_per_chunk,"
+                                    "sample_desc_index", data);
+        } else {
+            char header[32];
+            char value[256];
+            for (unsigned int i=0; i<m_Entries.ItemCount(); i++) {
+                AP4_FormatString(header, sizeof(header), "entry %8d", i);
+                AP4_FormatString(value, sizeof(value),
+                                 "first_chunk=%d, first_sample=%d, chunk_count=%d, samples_per_chunk=%d, sample_desc_index=%d",
+                                 m_Entries[i].m_FirstChunk,
+                                 m_Entries[i].m_FirstSample,
+                                 m_Entries[i].m_ChunkCount,
+                                 m_Entries[i].m_SamplesPerChunk,
+                                 m_Entries[i].m_SampleDescriptionIndex);
+                inspector.AddField(header, value);
+            }
         }
     }
     

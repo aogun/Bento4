@@ -126,6 +126,11 @@ public:
                           FormatHint           hint = HINT_NONE) {
         (void)hint; // gcc warning 
     }
+    virtual void AddFieldArray(AP4_Size             /* column number */,
+                          AP4_Size             /* row number */,
+                          const char *             /* column names */,
+                          AP4_UI64  *          /* array data */) {
+    }
     
 protected:
     AP4_Ordinal m_Verbosity;
